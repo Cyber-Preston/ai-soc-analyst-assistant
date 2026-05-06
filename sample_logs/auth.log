@@ -1,0 +1,7 @@
+May  6 10:21:02 ubuntu sshd[1011]: Failed password for invalid user admin from 45.83.12.10 port 51422 ssh2
+May  6 10:21:05 ubuntu sshd[1012]: Failed password for invalid user admin from 45.83.12.10 port 51423 ssh2
+May  6 10:21:08 ubuntu sshd[1013]: Failed password for invalid user test from 45.83.12.10 port 51424 ssh2
+May  6 10:21:12 ubuntu sshd[1014]: Failed password for root from 45.83.12.10 port 51425 ssh2
+May  6 10:21:15 ubuntu sshd[1015]: Failed password for invalid user oracle from 45.83.12.10 port 51426 ssh2
+May  6 10:22:31 ubuntu sshd[1022]: Accepted password for kai from 192.168.1.25 port 52211 ssh2
+May  6 10:25:44 ubuntu sshd[1031]: Failed password for root from 185.220.101.8 port 61231 ssh2

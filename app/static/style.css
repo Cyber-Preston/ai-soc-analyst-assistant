@@ -1,0 +1,288 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+.container {
+    width: min(1100px, 92%);
+    margin: 0 auto;
+    padding: 40px 0;
+}
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.eyebrow {
+    color: #38bdf8;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+h1 {
+    font-size: 42px;
+    margin: 8px 0;
+}
+
+.subtext {
+    color: #cbd5e1;
+    max-width: 700px;
+    line-height: 1.6;
+}
+
+.stat-card, .panel, .alert-card {
+    background: #111827;
+    border: 1px solid #334155;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+.stat-card {
+    min-width: 170px;
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 46px;
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+.stat-label {
+    color: #cbd5e1;
+}
+
+.panel {
+    margin-bottom: 30px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 190px;
+    border-radius: 12px;
+    border: 1px solid #475569;
+    background: #020617;
+    color: #e5e7eb;
+    padding: 16px;
+    font-family: Consolas, monospace;
+    font-size: 14px;
+    resize: vertical;
+}
+
+button {
+    margin-top: 14px;
+    background: #2563eb;
+    color: white;
+    border: 0;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.secondary {
+    background: #334155;
+}
+
+.clear-form {
+    display: inline;
+    margin-left: 8px;
+}
+
+.alerts {
+    display: grid;
+    gap: 18px;
+}
+
+.alert-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.badge {
+    background: #334155;
+    color: white;
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.severity-critical {
+    border-left: 6px solid #ef4444;
+}
+
+.severity-high {
+    border-left: 6px solid #f97316;
+}
+
+.severity-medium {
+    border-left: 6px solid #eab308;
+}
+
+.severity-low {
+    border-left: 6px solid #22c55e;
+}
+
+pre {
+    white-space: pre-wrap;
+    background: #020617;
+    padding: 14px;
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.timestamp, .empty {
+    color: #94a3b8;
+}
+
+.report-link {
+    display: inline-block;
+    margin-top: 14px;
+    margin-left: 8px;
+    background: #0f766e;
+    color: white;
+    text-decoration: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.report-link:hover {
+    opacity: 0.9;
+}
+
+.monitor-form {
+    display: inline;
+    margin-left: 8px;
+}
+
+.monitor-button {
+    background: #7c3aed;
+}
+
+.splunk-button {
+    background: #16a34a;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.metric-card {
+    background: #111827;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+}
+
+.metric-number {
+    display: block;
+    font-size: 34px;
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+.metric-label {
+    display: block;
+    margin-top: 6px;
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+.critical-metric {
+    border-left: 6px solid #ef4444;
+}
+
+.high-metric {
+    border-left: 6px solid #f97316;
+}
+
+@media (max-width: 900px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.chart-card {
+    height: 330px;
+}
+
+.chart-card canvas {
+    max-height: 240px;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.chart-card {
+    background: #111827;
+    border: 1px solid #334155;
+    border-radius: 18px;
+    padding: 20px;
+    height: 360px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+}
+
+.chart-card h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 20px;
+}
+
+.chart-card canvas {
+    width: 100% !important;
+    height: 260px !important;
+}
+
+@media (max-width: 1000px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 760px) {
+    .hero {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+}

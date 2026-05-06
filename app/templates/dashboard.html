@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI SOC Analyst Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <main class="container">
+
+        <section class="hero">
+            <div>
+                <p class="eyebrow">Cybersecurity Portfolio Project</p>
+                <h1>AI-Powered SOC Analyst Assistant</h1>
+                <p class="subtext">
+                    Real-time SOC dashboard integrating Splunk SIEM, MITRE ATT&CK,
+                    threat intelligence enrichment, and AI-powered incident analysis.
+                </p>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-number">{{ alert_count }}</span>
+                <span class="stat-label">Total Alerts</span>
+            </div>
+        </section>
+
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <span class="metric-number">{{ metrics.total_alerts }}</span>
+                <span class="metric-label">Total Alerts</span>
+            </div>
+
+            <div class="metric-card critical-metric">
+                <span class="metric-number">{{ metrics.critical_alerts }}</span>
+                <span class="metric-label">Critical Alerts</span>
+            </div>
+
+            <div class="metric-card high-metric">
+                <span class="metric-number">{{ metrics.high_alerts }}</span>
+                <span class="metric-label">High Alerts</span>
+            </div>
+
+            <div class="metric-card">
+                <span class="metric-number">{{ metrics.unique_attackers }}</span>
+                <span class="metric-label">Unique Attackers</span>
+            </div>
+
+            <div class="metric-card">
+                <span class="metric-number">{{ metrics.mitre_techniques }}</span>
+                <span class="metric-label">MITRE Techniques</span>
+            </div>
+        </section>
+
+        <section class="charts-grid">
+            <div class="chart-card">
+                <h2>Alerts by Severity</h2>
+                <canvas id="severityChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h2>Top Attacker IPs</h2>
+                <canvas id="attackerChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h2>MITRE Techniques</h2>
+                <canvas id="mitreChart"></canvas>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Analyze Logs</h2>
+
+            <form method="post" action="/analyze">
+                <textarea name="log_text" placeholder="Paste /var/log/auth.log lines here..." required></textarea>
+                <button type="submit">Analyze Logs</button>
+            </form>
+
+            <form method="post" action="/clear" class="clear-form">
+                <button class="secondary" type="submit">Clear Alerts</button>
+            </form>
+
+            <a class="report-link" href="/report" target="_blank">
+                Export Incident Report
+            </a>
+
+            <form method="post" action="/monitor" class="monitor-form">
+                <button class="monitor-button" type="submit">
+                    Monitor Sample Log
+                </button>
+            </form>
+
+            <form method="post" action="/splunk" class="monitor-form">
+                <button class="splunk-button" type="submit">
+                    Pull From Splunk
+                </button>
+            </form>
+        </section>
+
+        <section class="alerts">
+            <h2>Security Alerts</h2>
+
+            {% if alerts %}
+                {% for alert in alerts %}
+                    <article class="alert-card severity-{{ alert.severity|lower }}">
+
+                        <div class="alert-header">
+                            <h3>{{ alert.title }}</h3>
+                            <span class="badge">{{ alert.severity }}</span>
+                        </div>
+
+                        <p><strong>Source IP:</strong> {{ alert.source_ip or "Unknown" }}</p>
+                        <p><strong>Event Type:</strong> {{ alert.event_type }}</p>
+                        <p><strong>Risk Score:</strong> {{ alert.risk_score }}/100</p>
+
+                        <p>
+                            <strong>MITRE ATT&CK:</strong>
+                            {{ alert.mitre_technique }} - {{ alert.mitre_name }}
+                        </p>
+
+                        <p><strong>Tactic:</strong> {{ alert.mitre_tactic }}</p>
+                        <p><strong>Threat Reputation:</strong> {{ alert.threat_reputation }}</p>
+                        <p><strong>Confidence:</strong> {{ alert.threat_confidence }}%</p>
+                        <p><strong>Origin Country:</strong> {{ alert.threat_country }}</p>
+                        <p><strong>AI Analysis:</strong> {{ alert.ai_summary }}</p>
+                        <p><strong>Recommendation:</strong> {{ alert.recommendation }}</p>
+
+                        <details>
+                            <summary>Raw Event</summary>
+                            <pre>{{ alert.raw_event }}</pre>
+                        </details>
+
+                        <p class="timestamp">{{ alert.created_at }}</p>
+
+                    </article>
+                {% endfor %}
+            {% else %}
+                <p class="empty">
+                    No alerts yet. Paste sample logs to begin.
+                </p>
+            {% endif %}
+        </section>
+
+    </main>
+
+    <script id="severity-labels" type="application/json">{{ metrics.severity_labels | tojson }}</script>
+    <script id="severity-values" type="application/json">{{ metrics.severity_values | tojson }}</script>
+    <script id="attacker-labels" type="application/json">{{ metrics.attacker_labels | tojson }}</script>
+    <script id="attacker-values" type="application/json">{{ metrics.attacker_values | tojson }}</script>
+    <script id="mitre-labels" type="application/json">{{ metrics.mitre_labels | tojson }}</script>
+    <script id="mitre-values" type="application/json">{{ metrics.mitre_values | tojson }}</script>
+
+    <script>
+        function readJson(id) {
+            return JSON.parse(document.getElementById(id).textContent);
+        }
+
+        const severityLabels = readJson("severity-labels");
+        const severityValues = readJson("severity-values");
+
+        const attackerLabels = readJson("attacker-labels");
+        const attackerValues = readJson("attacker-values");
+
+        const mitreLabels = readJson("mitre-labels");
+        const mitreValues = readJson("mitre-values");
+
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false
+        };
+
+        new Chart(document.getElementById("severityChart"), {
+            type: "doughnut",
+            data: {
+                labels: severityLabels,
+                datasets: [{
+                    data: severityValues
+                }]
+            },
+            options: chartOptions
+        });
+
+        new Chart(document.getElementById("attackerChart"), {
+            type: "bar",
+            data: {
+                labels: attackerLabels,
+                datasets: [{
+                    label: "Alerts",
+                    data: attackerValues
+                }]
+            },
+            options: chartOptions
+        });
+
+        new Chart(document.getElementById("mitreChart"), {
+            type: "bar",
+            data: {
+                labels: mitreLabels,
+                datasets: [{
+                    label: "Detections",
+                    data: mitreValues
+                }]
+            },
+            options: chartOptions
+        });
+
+        setInterval(() => {
+            window.location.reload();
+        }, 10000);
+    </script>
+    <script>
+    async function autoPullLogs() {
+        try {
+            await fetch("/auto-pull");
+        } catch (err) {
+            console.error("Auto pull failed", err);
+        }
+    }
+
+    setInterval(() => {
+        autoPullLogs();
+        window.location.reload();
+    }, 10000);
+</script>
+</body>
+</html>

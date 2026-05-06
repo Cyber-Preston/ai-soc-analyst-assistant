@@ -1,0 +1,8 @@
+services:
+  ai-soc-assistant:
+    build: .
+    container_name: ai-soc-assistant
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./soc_alerts.db:/app/soc_alerts.db
